@@ -1,6 +1,6 @@
 import { Connection, Keypair } from "@solana/web3.js";
 
-export interface ITransferParams {
+export interface TransferParams {
     walletFrom: Keypair;
     walletTo: Keypair;
     sol?: number;

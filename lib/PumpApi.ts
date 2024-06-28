@@ -1,18 +1,18 @@
-import { createTransaction, swap } from "@cryptoscan/swap-sdk";
-import { IPumpApiParams } from "./types/IPumpApiParams";
-import { IBuyParams } from "./types/IBuyParams";
-import { ISellParams } from "./types/ISellParams";
-import { Connection } from "@solana/web3.js";
-import { IBumpParams } from "./types/IBumpParams";
-import sendTransaction from '@cryptoscan/solana-send-transaction'
-import { ITransferBuyParams } from "./types/ITransferBuyParams";
-import { createWallet, getBalance } from "@cryptoscan/solana-wallet-sdk";
-import { ITransferSellParams } from "./types/ITransferSellParams";
 import { getRate } from "@cryptoscan/scanner-sdk";
-import { ITransferParams } from "./types/ITransferParams";
+import sendTransaction from "@cryptoscan/solana-send-transaction";
+import { createWallet, getBalance } from "@cryptoscan/solana-wallet-sdk";
+import { createTransaction, swap } from "@cryptoscan/swap-sdk";
+import { Connection } from "@solana/web3.js";
+import { BumpParams } from "./types/BumpParams";
+import { TransferParams } from './types/TransferParams';
+import { BuyParams } from "./types/BuyParams";
+import { PumpApiParams } from "./types/PumpApiParams";
+import { SellParams } from "./types/SellParams";
+import { TransferBuyParams } from "./types/TransferBuyParams";
+import { TransferSellParams } from "./types/TransferSellParams";
 
 export class PumpApi {
-	protected readonly params: IPumpApiParams = {
+	protected readonly params: PumpApiParams = {
 		buySlippage: 10,
 		sellSlippage: 10,
 		buyFee: 0.00005,
@@ -21,7 +21,7 @@ export class PumpApi {
 		connection: new Connection('https://api.mainnet-beta.solana.com/'),
 	}
 
-	public constructor(params?: Partial<IPumpApiParams>) {
+	public constructor(params?: Partial<PumpApiParams>) {
 		if (params) {
 			this.params = {
 				...this.params,
@@ -30,7 +30,7 @@ export class PumpApi {
 		}
 	}
 
-	public async buy(params: IBuyParams): Promise<string | Error> {
+	public async buy(params: BuyParams): Promise<string | Error> {
 		if (!params.payerWallet) {
 			params.payerWallet = params.wallet;
 		}
@@ -47,7 +47,7 @@ export class PumpApi {
 		});
 	}
 
-	public async sell(params: ISellParams): Promise<string | Error> {
+	public async sell(params: SellParams): Promise<string | Error> {
 		if (!params.payerWallet) {
 			params.payerWallet = params.wallet;
 		}
@@ -64,7 +64,7 @@ export class PumpApi {
 		});
 	}
 
-	public async transfer(params: ITransferParams): Promise<string | Error> {
+	public async transfer(params: TransferParams): Promise<string | Error> {
 		if (!params.payerWallet) {
 			params.payerWallet = params.walletFrom;
 		}
@@ -98,7 +98,7 @@ export class PumpApi {
 		});
 	}
 
-	public async bump(params: IBumpParams): Promise<string | Error> {
+	public async bump(params: BumpParams): Promise<string | Error> {
 		const coinAddress = params.coinAddress;
 		const getSol = () => Math.random() * (params.maxSol - params.minSol) + params.minSol
 
@@ -127,7 +127,7 @@ export class PumpApi {
 		});
 	}
 
-	public async transferBuy(params: ITransferBuyParams): Promise<string | Error> {
+	public async transferBuy(params: TransferBuyParams): Promise<string | Error> {
 		if (!params.payerWallet) {
 			params.payerWallet = params.mainWallet;
 		}
@@ -183,7 +183,7 @@ export class PumpApi {
 		});
 	}
 
-	public async transferSell(params: ITransferSellParams): Promise<string | Error> {
+	public async transferSell(params: TransferSellParams): Promise<string | Error> {
 		if (!params.payerWallet) {
 			params.payerWallet = params.mainWallet;
 		}

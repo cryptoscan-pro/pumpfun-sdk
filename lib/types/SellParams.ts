@@ -1,7 +1,7 @@
 import { ISendSolanaTransactionParams } from "@cryptoscan/solana-send-transaction";
 import { Keypair } from "@solana/web3.js";
 
-export interface ISellParams extends ISendSolanaTransactionParams {
+export interface SellParams extends ISendSolanaTransactionParams {
     wallet: Keypair;
     payerWallet?: Keypair;
     coinAddress: string;

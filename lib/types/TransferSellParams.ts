@@ -1,12 +1,12 @@
 import { ISendSolanaTransactionParams } from "@cryptoscan/solana-send-transaction";
 import { Keypair } from "@solana/web3.js";
 
-export interface IBumpParams extends ISendSolanaTransactionParams {
+export interface TransferSellParams extends ISendSolanaTransactionParams {
+    mainWallet: Keypair;
+    wallet: Keypair;
     coinAddress: string;
-    payerWallet: Keypair;
-    wallets: Keypair[];
-    minSol: number;
-    maxSol: number;
+    sol?: number;
+    payerWallet?: Keypair;
     slippage?: number;
     fee?: number;
 }

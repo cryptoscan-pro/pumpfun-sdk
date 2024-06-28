@@ -1,6 +1,6 @@
 import type { Connection } from "@solana/web3.js";
 
-export interface IPumpApiParams {
+export interface PumpApiParams {
     buySlippage: number;
     sellSlippage: number;
     buyFee: number;
