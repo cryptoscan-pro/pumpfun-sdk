@@ -238,6 +238,19 @@ api.transferSell({
   You sign transaction with private key locally only.
   Library is based on [@cryptoscan/swap-sdk](https://docs.cryptoscan.pro/swap/sdk)
 </details>
+<details>
+  <summary>Is it free?</summary>
+
+  We charge a 0.5% fee on each successful transaction. 
+  If you want to decrease fee - please contact us in [discord](https://discord.gg/ktewAs67fE) or [telegram](https://t.me/nomoney_trader)
+  We can increase fee down to 0.1% if you will contribute us.
+</details>
+<details>
+  <summary>How to contribute?</summary>
+
+  You can create pull requests or make a project based on our packages. 
+  You have chance to get some supply for a work and get fee reduced for the api.
+</details>
 
 ---
 
