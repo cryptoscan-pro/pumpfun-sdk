@@ -35,7 +35,8 @@ Response
 `txid` string - transaction hash
 
 ```javascript
-import { pumpApi } from '@cryptoscan/pump-sdk';
+import { getWallet } from '@cryptoscan/solana-wallet-sdk';
+import { PumpApi } from '@cryptoscan/pumpfun-sdk';
 
 const wallet = getWallet(process.env.SECRET_KEY!);
 const coinAddress = 'HJAoYbnsf16Z8ftk3SsuShKLQQgzmxAPu41RTpjjpump';
@@ -66,7 +67,8 @@ Response
 `txid` string - transaction hash
 
 ```javascript
-import { pumpApi } from '@cryptoscan/pump-sdk';
+import { getWallet } from '@cryptoscan/solana-wallet-sdk';
+import { PumpApi } from '@cryptoscan/pumpfun-sdk';
 
 const wallet = getWallet(process.env.SECRET_KEY!);
 const coinAddress = 'HJAoYbnsf16Z8ftk3SsuShKLQQgzmxAPu41RTpjjpump';
@@ -95,7 +97,8 @@ Response
 `txid` string - transaction hash
 
 ```javascript
-import { pumpApi } from '@cryptoscan/pump-sdk';
+import { getWallet } from '@cryptoscan/solana-wallet-sdk';
+import { PumpApi } from '@cryptoscan/pumpfun-sdk';
 
 const wallet = getWallet(process.env.SECRET_KEY!);
 const sol = undefined; // All amount
@@ -126,7 +129,7 @@ Response
 
 ```javascript
 import { getWallet } from '@cryptoscan/solana-wallet-sdk';
-import { pumpApi } from '@cryptoscan/pump-sdk';
+import { PumpApi } from '@cryptoscan/pumpfun-sdk';
 
 const wallet = getWallet(process.env.SECRET_KEY!);
 const wallets = [wallet, wallet];
@@ -166,7 +169,8 @@ Response
 `txid` string - transaction hash
 
 ```javascript
-import { pumpApi } from '@cryptoscan/pump-sdk';
+import { getWallet } from '@cryptoscan/solana-wallet-sdk';
+import { PumpApi } from '@cryptoscan/pumpfun-sdk';
 
 const mainWallet = getWallet(process.env.SECRET_KEY!);
 const wallet = getWallet(process.env.BUYER_KEY!);
@@ -204,7 +208,8 @@ Response
 `txid` string - transaction hash
 
 ```javascript
-import { pumpApi } from '@cryptoscan/pump-sdk';
+import { getWallet } from '@cryptoscan/solana-wallet-sdk';
+import { PumpApi } from '@cryptoscan/pumpfun-sdk';
 
 const mainWallet = getWallet(process.env.SECRET_KEY!);
 const wallet = getWallet(process.env.SELLER_KEY!);
@@ -232,16 +237,18 @@ api.transferSell({
 
 ---
 
+## Contribute
+
 To install dependencies:
 
 ```bash
-bun install
+npm install
 ```
 
-To run:
+To build:
 
 ```bash
-bun run lib/index.ts
+npm build
 ```
 
 This project was created using `bun init` in bun v1.1.0. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
