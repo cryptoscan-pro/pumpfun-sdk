@@ -114,6 +114,36 @@ api.transfer({
 })
 ```
 
+## Transfer Coins Example
+
+Request
+
+- `wallet` - wallet keypair (by secret key)
+- `sol` - amount of coins in SOL to transfer, (Optional) if empty - all balance
+- `coinAddress` - coin address (Optional)
+- `fee` - amount of SOL to pay fee (Optional)
+- `payerWallet` - payer wallet keypair (Optional)
+
+Response
+
+`txid` string - transaction hash
+
+```javascript
+import { getWallet } from '@cryptoscan/solana-wallet-sdk';
+import { PumpApi } from '@cryptoscan/pumpfun-sdk';
+
+const wallet = getWallet(process.env.SECRET_KEY!);
+const coinAddress = 'HJAoYbnsf16Z8ftk3SsuShKLQQgzmxAPu41RTpjjpump';
+const sol = 0.01;
+const api = new PumpApi();
+
+api.transfer({
+  wallet,
+  coinAddress,
+  sol,
+})
+```
+
 ## Bump Solana Example
 
 Request
