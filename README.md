@@ -2,14 +2,16 @@
 
 The fastest and easiest way to trade on pumpfun
 
-- Buy/Sell coin
+- **Auto-create Account** system
 - **Multi-wallets** support
 - **Anti Bubble Map** system
+- **Bump detector** of coin
+- **Listen transactions** of coin (NEW)
+- Buy/Sell coin
 - Transfer Pumpfun coins
 - Transfer solana
 - Buy/Sell/Transfer in 1 transaction
 - Bump generator
-- Bump's coin scanner
 
 [[GitHub]](https://github.com/cryptoscan-pro/pumpfun-sdk)
 [[Our website]](https://cryptoscan.pro/)
@@ -31,7 +33,7 @@ Request
 - `coinAddress` - coin address
 - `fee` - amount of SOL to pay fee (Optional)
 - `payerWallet` - payer wallet keypair (Optional)
-- `slippage` - amount of slippage (example: 20)
+- `slippage` - amount of slippage (Default: 1)
 - `priorityFee` - amount of SOL to pay priority fee (Optional)
 
 Response
@@ -63,7 +65,7 @@ Request
 - `coinAddress` - coin address
 - `fee` - amount of SOL to pay fee (Optional)
 - `payerWallet` - payer wallet keypair (Optional)
-- `slippage` - amount of slippage (example: 20)
+- `slippage` - amount of slippage (Default: 10)
 - `priorityFee` - amount of SOL to pay priority fee (Optional)
 
 Response
@@ -154,7 +156,7 @@ Request
 - `maxSol` - maximal SOL to buy by one wallet
 - `coinAddress` - coin address (Optional)
 - `fee` - amount of SOL to pay fee (Optional)
-- `slippage` - amount of slippage (example: 20)
+- `slippage` - amount of slippage (example: 10)
 - `priorityFee` - amount of SOL to pay priority fee (Optional)
 
 Response
@@ -195,7 +197,7 @@ Request
 - `coinAddress` - coin address
 - `fee` - amount of SOL to pay fee (Optional)
 - `payerWallet` - payer wallet keypair (Optional)
-- `slippage` - amount of slippage (example: 20)
+- `slippage` - amount of slippage (Default: 1)
 - `priorityFee` - amount of SOL to pay priority fee (Optional)
 
 Response
@@ -234,7 +236,7 @@ Request
 - `coinAddress` - coin address
 - `fee` - amount of SOL to pay fee (Optional)
 - `payerWallet` - payer wallet keypair (Optional)
-- `slippage` - amount of slippage (example: 20)
+- `slippage` - amount of slippage (Default: 10)
 - `priorityFee` - amount of SOL to pay priority fee (Optional)
 
 Response
@@ -264,14 +266,14 @@ api.transferSell({
 <details>
   <summary>Is it secure to use sdk with private key?</summary>
 
-  You don't share private key through api request.
+  Yes. You don't share private key through api request.
   You sign transaction with private key locally only.
   Library is based on [@cryptoscan/swap-sdk](https://docs.cryptoscan.pro/swap/sdk)
 </details>
 <details>
   <summary>Is it free?</summary>
 
-  We charge a 0.5% fee on each successful transaction. 
+  We charge a 0.5% fee on each successful transaction instruction. 
   If you want to decrease fee - please contact us in [discord](https://discord.gg/ktewAs67fE) or [telegram](https://t.me/nomoney_trader)
   We can increase fee down to 0.1% if you will contribute us.
 </details>

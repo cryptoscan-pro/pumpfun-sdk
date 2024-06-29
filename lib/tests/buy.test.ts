@@ -15,6 +15,7 @@ describe('Test buy', () => {
       wallet,
       coinAddress,
       sol: 0.01,
+      priorityFee: 0.00001,
     })
 
     console.log('TX:', tx)

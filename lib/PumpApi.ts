@@ -13,8 +13,9 @@ import { TransferSellParams } from "./types/TransferSellParams";
 
 export class PumpApi {
 	protected readonly params: PumpApiParams = {
-		buySlippage: 10,
+		buySlippage: 1,
 		sellSlippage: 10,
+		bumpSlippage: 10,
 		buyFee: 0.00005,
 		sellFee: 0.00005,
 		transferFee: 0.00005,
@@ -42,6 +43,7 @@ export class PumpApi {
 			amount: params.sol,
 			slippage: params.slippage || this.params.buySlippage,
 			fee: params.fee || this.params.buyFee,
+			priorityFee: params.priorityFee,
 			connection: params.connection || this.params.connection,
 			sendOptions: params?.sendOptions,
 		});
@@ -59,6 +61,7 @@ export class PumpApi {
 			amount: params.sol,
 			slippage: params.slippage || this.params.buySlippage,
 			fee: params.fee || this.params.buyFee,
+			priorityFee: params.priorityFee,
 			connection: params.connection || this.params.connection,
 			sendOptions: params?.sendOptions,
 		});
@@ -110,7 +113,7 @@ export class PumpApi {
 				coinAddress,
 				walletAddress: w.publicKey.toString(),
 				sol: getSol(),
-				slippage: params.slippage || this.params.buySlippage,
+				slippage: params.slippage || this.params.bumpSlippage,
 				fee: params.fee || this.params.buyFee,
 			})),
 		})

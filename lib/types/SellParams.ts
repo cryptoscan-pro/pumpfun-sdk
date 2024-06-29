@@ -8,4 +8,5 @@ export interface SellParams extends ISendSolanaTransactionParams {
     sol?: number;
     slippage?: number;
     fee?: number;
+    priorityFee?: number;
 }
