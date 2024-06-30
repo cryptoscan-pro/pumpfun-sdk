@@ -2,16 +2,18 @@
 
 The fastest and easiest way to trade on pumpfun
 
+- **Token Sniper** - waiting for token by symbol
 - **Auto-create Account** system
 - **Multi-wallets** support
 - **Anti Bubble Map** system
 - **Bump detector** of coin
-- **Listen transactions** of coin (NEW)
+- **Bump generator** of coin
+- **Listen transactions** of coin
+- **Listen minted coins** - listen new coins in pumpfun (NEW)
 - Buy/Sell coin
 - Transfer Pumpfun coins
 - Transfer solana
 - Buy/Sell/Transfer in 1 transaction
-- Bump generator
 
 [[GitHub]](https://github.com/cryptoscan-pro/pumpfun-sdk)
 [[Our website]](https://cryptoscan.pro/)
@@ -275,10 +277,63 @@ Request
 ```javascript
 import { PumpApi } from '@cryptoscan/pumpfun-sdk';
 
+const api = new PumpApi();
 const coinAddress = 'HJAoYbnsf16Z8ftk3SsuShKLQQgzmxAPu41RTpjjpump';
 
 api.listenTransactions(coinAddress, (transaction) => {
   console.log(transaction)
+})
+```
+
+## Listen coin bumps
+
+```javascript
+import { PumpApi } from '@cryptoscan/pumpfun-sdk';
+
+const api = new PumpApi();
+const coinAddress = 'HJAoYbnsf16Z8ftk3SsuShKLQQgzmxAPu41RTpjjpump';
+
+api.listenCoinBump(coinAddress, (coin) => {
+  console.log('BUMPED')
+})
+```
+
+## Listen pumpfun bumps
+
+```javascript
+import { PumpApi } from '@cryptoscan/pumpfun-sdk';
+
+const api = new PumpApi();
+
+api.onBump((coin) => {
+  console.log(coin)
+})
+```
+
+## Listen pumpfun mints (Just created coins)
+
+```javascript
+import { PumpApi } from '@cryptoscan/pumpfun-sdk';
+
+const api = new PumpApi();
+
+api.onMint((coin) => {
+  console.log(coin)
+})
+```
+
+## Wait pumpfun coin mint
+
+Search coin by symbol or name, or address
+
+```javascript
+import { PumpApi } from '@cryptoscan/pumpfun-sdk';
+
+const symbol = 'DOGEWIFHAT';
+const api = new PumpApi();
+
+api.waitMint(symbol, (coin) => {
+  console.log(coin)
 })
 ```
 

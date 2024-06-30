@@ -1,4 +1,5 @@
 import { getRate, listenTransactions, Transaction } from "@cryptoscan/scanner-sdk";
+import WebSocket from 'ws';
 import sendTransaction from "@cryptoscan/solana-send-transaction";
 import { createWallet, getBalance } from "@cryptoscan/solana-wallet-sdk";
 import { createTransaction, swap } from "@cryptoscan/swap-sdk";
@@ -261,7 +262,46 @@ export class PumpApi {
 		return listenTransactions('solana', address, onTransaction);
 	}
 
+	public listenCoinBump(coinAddress: string, onBump: (coin: PumpCoin) => void) {
+		return this.listenPumpFun((type, coin) => {
+			if (type === 'tradeCreated' && coin.mint === coinAddress) {
+				onBump(coin);
+			}
+		});
+	}
+
+	public waitMint(coinAddress: string): Promise<PumpCoin> {
+		return new Promise((resolve) => {
+			const stop = this.onMint((coin) => {
+				if (
+					coin.mint === coinAddress
+					|| coin.symbol.toLowerCase() === coinAddress.toLowerCase()
+					|| coin.name.toLowerCase() === coinAddress.toLowerCase()
+				) {
+					stop();
+					resolve(coin);
+				}
+			});
+		});
+	}
+
+	public onMint(callback: (data: PumpCoin) => void): () => void {
+		return this.listenPumpFun((type, coin) => {
+			if (type === 'newCoinCreated') {
+				callback(coin);
+			}
+		});
+	}
+
 	public onBump(callback: (data: PumpCoin) => void): () => void {
+		return this.listenPumpFun((type, coin) => {
+			if (type === 'tradeCreated') {
+				callback(coin);
+			}
+		});
+	}
+
+	private listenPumpFun(callback: (type: string, data: PumpCoin) => void): () => void {
 		const socketUrl = 'wss://frontend-api.pump.fun/socket.io/?EIO=4&transport=websocket';
 		let ws = new WebSocket(socketUrl);
 		const close = () => {
@@ -277,14 +317,14 @@ export class PumpApi {
 			ws.send('40')
 		});
 
-		ws.on('message', (data) => {
+		ws.on('message', (data: any) => {
 			const text = data.toString('utf-8');
 			try {
-				const coin = JSON.parse(text.replace(/^42/, ''))[1];
+				const [type, coin] = JSON.parse(text.replace(/^42/, ''));
 				if (!coin) {
 					return;
 				}
-				callback(coin);
+				callback(type, coin);
 			} catch {
 			}
 		});
@@ -292,10 +332,10 @@ export class PumpApi {
 		ws.on('close', async () => {
 			console.log('Disconnected from the PumpApi WebSocket');
 			new Promise((resolve) => setTimeout(resolve, 500))
-			return this.onBump(callback);
+			return this.listenPumpFun(callback);
 		});
 
-		ws.on('error', (error) => {
+		ws.on('error', (error: any) => {
 			console.error('WebSocket error:', error);
 		});
 
