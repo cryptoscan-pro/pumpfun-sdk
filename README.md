@@ -2,7 +2,7 @@
 
 The fastest and easiest way to trade on pumpfun
 
-- **Token Sniper** - waiting for token by symbol
+- **Token Sniper** - waiting for token minting by symbol
 - **Auto-create Account** system
 - **Multi-wallets** support
 - **Anti Bubble Map** system
@@ -21,6 +21,8 @@ The fastest and easiest way to trade on pumpfun
 [[Discord]](https://discord.gg/ktewAs67fE)
 
 ## Getting started
+
+Let's see our [Project example](https://github.com/cryptoscan-pro/pumpfun-sdk/example)
 
 ```
 npm install @cryptoscan/pumpfun-sdk

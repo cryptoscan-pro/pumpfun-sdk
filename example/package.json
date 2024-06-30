@@ -1,0 +1,20 @@
+{
+  "name": "@cryptoscan/pumpfun-tg-bot",
+  "module": "src/index.ts",
+  "scripts": {
+    "start": "ts-node --esm src/index.ts",
+    "dev": "ts-node --esm src/test.ts"
+  },
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@cryptoscan/pumpfun-sdk": "latest",
+    "@cryptoscan/solana-wallet-sdk": "latest",
+    "dotenv": "^16.4.5"
+  }
+}
