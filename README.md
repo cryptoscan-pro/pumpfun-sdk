@@ -261,6 +261,27 @@ api.transferSell({
 })
 ```
 
+## Listen transactions
+
+Request
+
+- `coinAddress` - coin address
+- `callback` - listen transaction callback
+	- `tx` - transaction hash
+	- `baseAmount` - amount of base coin
+	- `quoteAmount` - amount of quote coin
+	- `amount` - amount of base coin
+
+```javascript
+import { PumpApi } from '@cryptoscan/pumpfun-sdk';
+
+const coinAddress = 'HJAoYbnsf16Z8ftk3SsuShKLQQgzmxAPu41RTpjjpump';
+
+api.listenTransactions(coinAddress, (transaction) => {
+  console.log(transaction)
+})
+```
+
 ## FAQ
 
 <details>

@@ -1,4 +1,4 @@
-import { getRate } from "@cryptoscan/scanner-sdk";
+import { getRate, listenTransactions, Transaction } from "@cryptoscan/scanner-sdk";
 import sendTransaction from "@cryptoscan/solana-send-transaction";
 import { createWallet, getBalance } from "@cryptoscan/solana-wallet-sdk";
 import { createTransaction, swap } from "@cryptoscan/swap-sdk";
@@ -10,6 +10,7 @@ import { PumpApiParams } from "./types/PumpApiParams";
 import { SellParams } from "./types/SellParams";
 import { TransferBuyParams } from "./types/TransferBuyParams";
 import { TransferSellParams } from "./types/TransferSellParams";
+import { PumpCoin } from "./types";
 
 export class PumpApi {
 	protected readonly params: PumpApiParams = {
@@ -254,5 +255,50 @@ export class PumpApi {
 			...params,
 			connection: params.connection || this.params.connection
 		});
+	}
+
+	public async listenTransactions(address: string, onTransaction: (transaction: Transaction) => void) {
+		return listenTransactions('solana', address, onTransaction);
+	}
+
+	public onBump(callback: (data: PumpCoin) => void): () => void {
+		const socketUrl = 'wss://frontend-api.pump.fun/socket.io/?EIO=4&transport=websocket';
+		let ws = new WebSocket(socketUrl);
+		const close = () => {
+			ws.close();
+		}
+		if (!ws) {
+			console.log('no ws')
+			return close;
+		}
+
+		ws.on('open', () => {
+			console.log('Connected to the WebSocket');
+			ws.send('40')
+		});
+
+		ws.on('message', (data) => {
+			const text = data.toString('utf-8');
+			try {
+				const coin = JSON.parse(text.replace(/^42/, ''))[1];
+				if (!coin) {
+					return;
+				}
+				callback(coin);
+			} catch {
+			}
+		});
+
+		ws.on('close', async () => {
+			console.log('Disconnected from the PumpApi WebSocket');
+			new Promise((resolve) => setTimeout(resolve, 500))
+			return this.onBump(callback);
+		});
+
+		ws.on('error', (error) => {
+			console.error('WebSocket error:', error);
+		});
+
+		return close;
 	}
 }
