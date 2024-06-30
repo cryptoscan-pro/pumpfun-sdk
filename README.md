@@ -22,7 +22,7 @@ The fastest and easiest way to trade on pumpfun
 
 ## Getting started
 
-Let's see our [Project example](https://github.com/cryptoscan-pro/pumpfun-sdk/example)
+Let's see our [Project example](https://github.com/cryptoscan-pro/pumpfun-sdk/tree/main/example)
 
 ```
 npm install @cryptoscan/pumpfun-sdk
