@@ -12,4 +12,3 @@ api.buy({
   coinAddress,
   sol,
 }).then((tx) => console.log(tx))
-

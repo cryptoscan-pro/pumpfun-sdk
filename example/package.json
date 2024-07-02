@@ -13,8 +13,8 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@cryptoscan/pumpfun-sdk": "latest",
-    "@cryptoscan/solana-wallet-sdk": "latest",
+    "@cryptoscan/pumpfun-sdk": "^0.0.8",
+    "@cryptoscan/solana-wallet-sdk": "^0.0.3",
     "dotenv": "^16.4.5"
   }
 }

@@ -1,4 +1,9 @@
 {
+	"ts-node": {
+    "esm": true,
+    // https://github.com/TypeStrong/ts-node/issues/422
+    "experimentalSpecifierResolution": "node",
+  },
   "compilerOptions": {
     // Enable latest features
     "lib": ["ESNext", "DOM"],
