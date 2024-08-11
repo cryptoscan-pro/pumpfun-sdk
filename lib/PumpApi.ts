@@ -1,17 +1,14 @@
-import { getRate, listenTransactions, Transaction } from "@cryptoscan/scanner-sdk";
 import WebSocket from 'ws';
-import sendTransaction from "@cryptoscan/solana-send-transaction";
-import { createWallet, getBalance } from "@cryptoscan/solana-wallet-sdk";
-import { createTransaction, swap } from "@cryptoscan/swap-sdk";
+import { CreateSwapParams, CreateTransferParams, swap } from "@cryptoscan/swap-sdk";
+import { getRate } from '@cryptoscan/scanner-sdk';
 import { Connection } from "@solana/web3.js";
-import { BumpParams } from "./types/BumpParams";
 import { TransferParams } from './types/TransferParams';
 import { BuyParams } from "./types/BuyParams";
 import { PumpApiParams } from "./types/PumpApiParams";
 import { SellParams } from "./types/SellParams";
-import { TransferBuyParams } from "./types/TransferBuyParams";
-import { TransferSellParams } from "./types/TransferSellParams";
 import { PumpCoin } from "./types";
+import { SwapParams } from '@cryptoscan/swap-sdk';
+import { getBalance } from '@cryptoscan/solana-wallet-sdk';
 
 export class PumpApi {
 	protected readonly params: PumpApiParams = {
@@ -33,233 +30,98 @@ export class PumpApi {
 		}
 	}
 
-	public async buy(params: BuyParams): Promise<string | Error> {
-		if (!params.payerWallet) {
-			params.payerWallet = params.wallet;
-		}
+	public async buy(_params: BuyParams): Promise<string> {
+		const params: SwapParams<Omit<CreateSwapParams, 'walletAddress'>> = {
+			..._params,
+			type: 'swap',
+			network: 'solana',
+			service: 'pumpfun',
+			amount: _params.sol,
+			wallet: _params.payerWallet || _params.wallet,
+			from: 'So11111111111111111111111111111111111111112',
+			to: _params.coinAddress,
+			fee: _params.fee || this.params.buyFee,
+			slippage: _params.slippage || this.params.buySlippage,
+		};
 
-		return swap({
-			wallet: params.wallet,
-			from: 'sol',
-			to: params.coinAddress,
-			amount: params.sol,
-			slippage: params.slippage || this.params.buySlippage,
-			fee: params.fee || this.params.buyFee,
-			priorityFee: params.priorityFee,
-			connection: params.connection || this.params.connection,
-			sendOptions: params?.sendOptions,
-		});
+		return swap(params);
 	}
 
-	public async sell(params: SellParams): Promise<string | Error> {
-		if (!params.payerWallet) {
-			params.payerWallet = params.wallet;
+	public async sell(_params: SellParams): Promise<string> {
+		let sol = _params.sol;
+		let amount: number | undefined;
+
+		if (!_params.sol) {
+			const balance = await getBalance(_params.wallet.publicKey.toString(), _params.coinAddress);
+			amount = balance;
 		}
-
-		return swap({
-			wallet: params.wallet,
-			from: params.coinAddress,
-			to: 'sol',
-			amount: params.sol,
-			slippage: params.slippage || this.params.buySlippage,
-			fee: params.fee || this.params.buyFee,
-			priorityFee: params.priorityFee,
-			connection: params.connection || this.params.connection,
-			sendOptions: params?.sendOptions,
-		});
-	}
-
-	public async transfer(params: TransferParams): Promise<string | Error> {
-		if (!params.payerWallet) {
-			params.payerWallet = params.walletFrom;
-		}
-
-		const transaction = await createTransaction({
-			payerAddress: params.payerWallet.publicKey.toString(),
-			instructions: [
-				{
-					type: 'budgetPrice',
-					sol: params.fee || this.params.transferFee,
-				},
-				{
-					type: 'transfer',
-					coinAddress: params.coinAddress,
-					fromAddress: params.walletFrom.publicKey.toString(),
-					toAddress: params.walletTo.publicKey.toString(),
-					sol: params.sol,
-				},
-			],
-		})
-
-		if (transaction instanceof Error) {
-			return transaction;
-		}
-
-		transaction.sign([params.walletFrom, params.walletTo, params.payerWallet]);
-
-		return sendTransaction(transaction, {
-			...params,
-			connection: params.connection || this.params.connection
-		});
-	}
-
-	public async bump(params: BumpParams): Promise<string | Error> {
-		const coinAddress = params.coinAddress;
-		const getSol = () => Math.random() * (params.maxSol - params.minSol) + params.minSol
-
-		const transaction = await createTransaction({
-			payerAddress: params.payerWallet.publicKey.toString(),
-			instructions: params.wallets.map((w) => ({
-				type: 'buy',
+		if (!amount) {
+			amount = await getRate({
+				network: 'solana',
 				service: 'pumpfun',
-				coinAddress,
-				walletAddress: w.publicKey.toString(),
-				sol: getSol(),
-				slippage: params.slippage || this.params.bumpSlippage,
-				fee: params.fee || this.params.buyFee,
-			})),
-		})
-
-		if (transaction instanceof Error) {
-			return transaction;
+				from: 'So11111111111111111111111111111111111111112',
+				to: _params.coinAddress,
+				amount: sol,
+			}).then((r) => r?.result)
 		}
 
-		transaction.sign(params.wallets.concat(params.payerWallet))
+		if (!amount) {
+			throw new Error('Failed to get price')
+		}
 
-		return sendTransaction(transaction, {
-			...params,
-			connection: params.connection || this.params.connection
-		});
+		const params: SwapParams<Omit<CreateSwapParams, 'walletAddress'>> = {
+			..._params,
+			type: 'swap',
+			network: 'solana',
+			service: 'pumpfun',
+			amount,
+			wallet: _params.payerWallet || _params.wallet,
+			from: _params.coinAddress,
+			to: 'So11111111111111111111111111111111111111112',
+			fee: _params.fee || this.params.sellFee,
+			slippage: _params.slippage || this.params.sellSlippage,
+		};
+
+		return swap(params);
 	}
 
-	public async transferBuy(params: TransferBuyParams): Promise<string | Error> {
-		if (!params.payerWallet) {
-			params.payerWallet = params.mainWallet;
+	public async transfer(_params: TransferParams): Promise<string> {
+		let amount = _params.sol;
+
+		if (!_params.sol) {
+			amount = await getBalance(_params.walletFrom.publicKey.toString());
 		}
+		if (!!_params.coinAddress || _params.coinAddress?.toLowerCase() === 'so11111111111111111111111111111111111111112') {
+			amount = await getRate({
+				network: 'solana',
+				service: 'pumpfun',
+				from: 'So11111111111111111111111111111111111111112',
+				to: _params.coinAddress,
+				amount,
+			}).then((r) => r?.result)
 
-		const coinAddress = params.coinAddress;
-		const bufferWallet = createWallet();
-
-		const transaction = await createTransaction({
-			...params,
-			payerAddress: params.payerWallet.publicKey.toString(),
-			instructions: [
-				{
-					type: 'budgetPrice',
-					sol: params.fee || this.params.transferFee,
-				},
-				{
-					type: 'transfer',
-					fromAddress: params.mainWallet.publicKey.toString(),
-					toAddress: bufferWallet.publicKey.toString(),
-					sol: params.sol * 1.01,
-				},
-				{
-					type: 'transfer',
-					fromAddress: bufferWallet.publicKey.toString(),
-					toAddress: params.wallet.publicKey.toString(),
-					sol: params.sol * 1.01,
-				},
-				{
-					type: 'buy',
-					service: 'pumpfun',
-					coinAddress: coinAddress,
-					walletAddress: params.wallet.publicKey.toString(),
-					sol: params.sol * 1.01,
-					slippage: params.slippage || this.params.buySlippage,
-				}
-			],
-		})
-
-		if (transaction instanceof Error) {
-			return transaction;
-		}
-
-		transaction.sign([
-			params.mainWallet,
-			params.payerWallet,
-			bufferWallet,
-			params.wallet,
-		])
-
-		return sendTransaction(transaction, {
-			...params,
-			connection: params.connection || this.params.connection
-		});
-	}
-
-	public async transferSell(params: TransferSellParams): Promise<string | Error> {
-		if (!params.payerWallet) {
-			params.payerWallet = params.mainWallet;
-		}
-
-		let sellFee = 0;
-
-		if (!params.sol) {
-			const tokensAmount = await getBalance(params.wallet.publicKey.toString(), params.coinAddress)
-			const rate = await getRate('sol', params.coinAddress, tokensAmount)
-
-			if (rate instanceof Error) {
-				throw rate;
+			if (!amount) {
+				throw new Error('Failed to get price')
 			}
-
-			params.sol = rate.result;
-			sellFee = rate.fee;
 		}
 
-		const coinAddress = params.coinAddress;
-		const bufferWallet = createWallet();
+		const params: SwapParams<CreateTransferParams> = {
+			..._params,
+			type: 'transfer',
+			network: 'solana',
+			wallet: _params.payerWallet || _params.walletFrom,
+			coinAddress: _params.coinAddress || 'So11111111111111111111111111111111111111112',
+			from: _params.walletFrom.publicKey.toString(),
+			to: _params.walletTo.publicKey.toString(),
+			amount: amount!,
+			fee: _params.fee || this.params.transferFee,
+		};
 
-		const transaction = await createTransaction({
-			...params,
-			payerAddress: params.payerWallet.publicKey.toString(),
-			instructions: [
-				{
-					type: 'budgetPrice',
-					sol: params.fee || this.params.transferFee,
-				},
-				{
-					type: 'sell',
-					service: 'pumpfun',
-					coinAddress: coinAddress,
-					walletAddress: params.wallet.publicKey.toString(),
-					sol: params.sol,
-					slippage: params.slippage || this.params.buySlippage,
-				},
-				{
-					type: 'transfer',
-					fromAddress: params.wallet.publicKey.toString(),
-					toAddress: bufferWallet.publicKey.toString(),
-					sol: params.sol - sellFee,
-				},
-				{
-					type: 'transfer',
-					fromAddress: bufferWallet.publicKey.toString(),
-					toAddress: params.mainWallet.publicKey.toString(),
-					sol: params.sol - sellFee,
-				},
-			],
-		})
-
-		if (transaction instanceof Error) {
-			return transaction;
-		}
-
-		transaction.sign([
-			params.mainWallet,
-			params.payerWallet,
-			bufferWallet,
-			params.wallet,
-		])
-
-		return sendTransaction(transaction, {
-			...params,
-			connection: params.connection || this.params.connection
-		});
+		return swap(params)
 	}
 
-	public async listenTransactions(address: string, onTransaction: (transaction: Transaction) => void) {
-		return listenTransactions('solana', address, onTransaction);
+	public async listenTransactions(address: string, onTransaction: (transaction: Record<string, unknown>) => void) {
+		throw new Error('is not implemented')
 	}
 
 	public listenCoinBump(coinAddress: string, onBump: (coin: PumpCoin) => void) {
@@ -303,7 +165,9 @@ export class PumpApi {
 
 	private listenPumpFun(callback: (type: string, data: PumpCoin) => void): () => void {
 		const socketUrl = 'wss://frontend-api.pump.fun/socket.io/?EIO=4&transport=websocket';
-		let ws = new WebSocket(socketUrl);
+		let ws = new WebSocket(socketUrl, undefined, {
+			// agent: new SocksProxyAgent('socks://z34VxR:2rF0MqMYH1@46.8.223.195:5501'),
+		});
 		const close = () => {
 			ws.close();
 		}

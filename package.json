@@ -2,7 +2,7 @@
   "name": "@cryptoscan/pumpfun-sdk",
   "main": "dist/index.js",
   "type": "module",
-  "version": "0.0.8",
+  "version": "1.0.0",
   "scripts": {
     "test": "bun --env-file=./.env.test test",
     "build": "tsc"
@@ -11,11 +11,11 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@cryptoscan/scanner-sdk": "latest",
+    "@cryptoscan/scanner-sdk": "workspace:latest",
     "@cryptoscan/solana-send-transaction": "latest",
     "@cryptoscan/solana-wallet-sdk": "latest",
-    "@cryptoscan/swap-sdk": "latest",
-    "@solana/web3.js": "^1.93.2",
+    "@cryptoscan/swap-sdk": "workspace:latest",
+    "@solana/web3.js": "1.93.1",
     "ws": "^8.17.1"
   }
 }

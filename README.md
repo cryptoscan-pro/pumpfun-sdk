@@ -3,21 +3,17 @@
 The fastest and easiest way to trade on pumpfun
 
 - **Token Sniper** - waiting for token minting by symbol
-- **Auto-create Account** system
-- **Multi-wallets** support
-- **Anti Bubble Map** system
 - **Bump detector** of coin
-- **Bump generator** of coin
-- **Listen transactions** of coin
-- **Listen minted coins** - listen new coins in pumpfun (NEW)
+- **Listen transactions** of coin (WIP)
+- **Listen minted coins** - listen new coins in pumpfun
+- Get rate/price of coin in USD/Solana
 - Buy/Sell coin
 - Transfer Pumpfun coins
 - Transfer solana
-- Buy/Sell/Transfer in 1 transaction
 
 [[GitHub]](https://github.com/cryptoscan-pro/pumpfun-sdk)
 [[Our website]](https://cryptoscan.pro/)
-[[Docs]](https://docs.cryptoscan.pro/)
+[[Docs]](https://cryptoscan.pro/docs/)
 [[Discord]](https://discord.gg/ktewAs67fE)
 
 ## Getting started
