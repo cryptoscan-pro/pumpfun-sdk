@@ -9,7 +9,7 @@ describe('Test sell', () => {
       connection: new Connection(process.env.CONNECTION_URL!),
     });
     const coinAddress = 'HJAoYbnsf16Z8ftk3SsuShKLQQgzmxAPu41RTpjjpump';
-    const wallet = getWallet(process.env.SECRET_KEY!);
+    const wallet = getWallet(process.env.TEST_SECRET_KEY!);
 
     const tx = await api.sell({
       wallet,
