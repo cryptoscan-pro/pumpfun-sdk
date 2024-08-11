@@ -1,5 +1,5 @@
-import { describe, test } from 'bun:test';
-import { PumpApi } from '../PumpApi';
+import { describe, test } from 'vitest';
+import { PumpApi } from '../PumpApi.js';
 
 const TIMEOUT = 60 * 1000;
 

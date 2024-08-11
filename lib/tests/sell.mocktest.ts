@@ -1,6 +1,6 @@
 import { getWallet } from '@cryptoscan/solana-wallet-sdk';
-import { describe, test, expect } from 'bun:test';
-import { PumpApi } from '../PumpApi';
+import { describe, test, expect } from 'vitest';
+import { PumpApi } from '../PumpApi.js';
 import { Connection } from '@solana/web3.js';
 
 describe('Test sell', () => {

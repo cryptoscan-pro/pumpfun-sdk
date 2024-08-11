@@ -2,11 +2,11 @@ import WebSocket from 'ws';
 import { CreateSwapParams, CreateTransferParams, swap } from "@cryptoscan/swap-sdk";
 import { getRate } from '@cryptoscan/scanner-sdk';
 import { Connection } from "@solana/web3.js";
-import { TransferParams } from './types/TransferParams';
-import { BuyParams } from "./types/BuyParams";
-import { PumpApiParams } from "./types/PumpApiParams";
-import { SellParams } from "./types/SellParams";
-import { PumpCoin } from "./types";
+import { TransferParams } from './types/TransferParams.js';
+import { BuyParams } from "./types/BuyParams.js";
+import { PumpApiParams } from "./types/PumpApiParams.js";
+import { SellParams } from "./types/SellParams.js";
+import { PumpCoin } from "./types/index.js";
 import { SwapParams } from '@cryptoscan/swap-sdk';
 import { getBalance } from '@cryptoscan/solana-wallet-sdk';
 
