@@ -1,0 +1,61 @@
+name: Build and deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build and deploy package
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+      - name: Log in to NPM
+        run: npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
+      - name: Install dependencies
+        run: npm install
+      - name: Test application
+        run: npm run test
+        env:
+          TEST_SECRET_KEY: ${{ secrets.TEST_SECRET_KEY }}
+          CONNECTION_URL: ${{ secrets.CONNECTION_URL }}
+      - name: Build application
+        run: npm run build
+      - name: Publish package
+        run: npm run release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+  notification:
+    name: Notification
+    needs: [ build ]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Discord Notification
+        if: success()
+        uses: discord-actions/message@v2
+        env:
+          COMMIT_URL: ${{ github.server_url }}/${{ github.repository }}/commit/${{github.sha}}
+        with:
+          webhookUrl: ${{ secrets.DISCORD_RELEASES_WEBHOOK }}
+          format: markdown
+          message: |
+            🔄 **New Release**: [cryptoscan-pro/pumpfun-sdk](https://github.com/cryptoscan-pro/pumpfun-sdk/)
+
+            Status: *${{ needs.build.result == 'success' && '✅ SUCCESS' || '❌ ERROR' }}* 
+            Branch: main
+            User: ${{ github.actor }}
+            Commit: ${{ env.COMMIT_URL }}
+            Text commit: ${{ github.event.head_commit.message }}

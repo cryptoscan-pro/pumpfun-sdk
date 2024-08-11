@@ -1,0 +1,49 @@
+name: Update PumpFun SDK Docs
+
+on:
+  push:
+    paths:
+      - README.md
+
+jobs:
+  update-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          git config --global user.email "62588539+javeoff@users.noreply.github.com"
+          git config --global user.name "Daniil Jave"
+
+      - name: Clone .github repository
+        run: |
+          rm -rf .github
+          git clone "git@github.com:cryptoscan-pro/app-web.git" .github
+
+      - name: Copy README.md to destination
+        run: |
+          cp README.md .github/docs/pumpfun-sdk.md
+
+      - name: Commit and push changes
+        run: |
+          cd .github
+          git add .
+          git commit -m "feat: update @cryptoscan/pumpfun-sdk docs"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Clean up
+        run: |
+          cd ..
+          rm -rf .github
+
+      - name: Success message
+        run: echo "README.md copied into .github/docs/pumpfun-sdk.md"

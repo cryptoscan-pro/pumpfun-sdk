@@ -1,5 +1,0 @@
-
-> @cryptoscan/pumpfun-sdk@0.0.7 build /Users/bondarev/projects/cryptoscan-pro/packages-public/pumpfun-sdk
-> pnpm run build:compile && pnpm run build:types
-
-[41m[30m ELIFECYCLE [39m[49m [31mCommand failed.[39m
