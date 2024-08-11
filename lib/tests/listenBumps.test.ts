@@ -1,15 +1,20 @@
-import { describe, test } from 'vitest';
+import { describe, expect, test } from 'vitest';
 import { PumpApi } from '../PumpApi.js';
 
-const TIMEOUT = 60 * 1000;
+const TIMEOUT = 5 * 1000;
 
 describe('Listen bumps', () => {
   test('Should listen bumps', async () => {
+    let idx = 0;
     const api = new PumpApi();
 
     api.onBump((coin) => {
-      console.log(coin);
+      if ('signature' in coin) {
+        idx += 1;
+      }
     })
     await new Promise((resolve) => setTimeout(resolve, TIMEOUT))
+
+    expect(idx > 5);
   }, TIMEOUT)
 })
