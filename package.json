@@ -11,10 +11,10 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@cryptoscan/scanner-sdk": "workspace:latest",
-    "@cryptoscan/solana-send-transaction": "latest",
-    "@cryptoscan/solana-wallet-sdk": "latest",
-    "@cryptoscan/swap-sdk": "workspace:latest",
+    "@cryptoscan/scanner-sdk": "^1.1.1",
+    "@cryptoscan/solana-send-transaction": "^0.5.1",
+    "@cryptoscan/solana-wallet-sdk": "^0.0.1",
+    "@cryptoscan/swap-sdk": "^1.6.0",
     "@solana/web3.js": "1.93.1",
     "ws": "^8.17.1"
   }
