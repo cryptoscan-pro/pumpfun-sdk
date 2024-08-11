@@ -42,6 +42,7 @@ export class PumpApi {
 			to: _params.coinAddress,
 			fee: _params.fee || this.params.buyFee,
 			slippage: _params.slippage || this.params.buySlippage,
+			connection: this.params.connection,
 		};
 
 		return swap(params);
@@ -80,6 +81,7 @@ export class PumpApi {
 			to: 'So11111111111111111111111111111111111111112',
 			fee: _params.fee || this.params.sellFee,
 			slippage: _params.slippage || this.params.sellSlippage,
+			connection: this.params.connection,
 		};
 
 		return swap(params);
