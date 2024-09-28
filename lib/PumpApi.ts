@@ -63,7 +63,7 @@ export class PumpApi {
 				from: 'So11111111111111111111111111111111111111112',
 				to: _params.coinAddress,
 				amount: sol,
-			}).then((r) => r?.result)
+			}).then((r) => r?.amount)
 		}
 
 		if (!amount) {
@@ -117,6 +117,7 @@ export class PumpApi {
 			to: _params.walletTo.publicKey.toString(),
 			amount: amount!,
 			fee: _params.fee || this.params.transferFee,
+			connection: this.params.connection,
 		};
 
 		return swap(params)

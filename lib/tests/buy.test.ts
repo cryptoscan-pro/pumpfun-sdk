@@ -10,17 +10,19 @@ describe('Test buy', () => {
     });
     const coinAddress = 'HJAoYbnsf16Z8ftk3SsuShKLQQgzmxAPu41RTpjjpump';
     const wallet = getWallet(process.env.TEST_SECRET_KEY!);
+    console.log('WALLET:', wallet.publicKey.toString());
 
     const tx = await api.buy({
       wallet,
       coinAddress,
-      sol: 0.01,
-      priorityFee: 0.00001,
+      sol: 0.02,
+      fee: 0.0001,
+      // priorityFee: 0.00001,
     })
 
     console.log('TX:', tx)
 
     expect(typeof tx === 'string').toBe(true)
     expect(!!tx).toBe(true)
-  })
+  }, 60_000)
 })

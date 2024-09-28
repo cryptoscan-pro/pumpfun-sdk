@@ -14,11 +14,13 @@ describe('Test sell', () => {
     const tx = await api.sell({
       wallet,
       coinAddress,
+      sol: 0.01,
+      fee: 0.0001,
     })
 
     console.log('TX:', tx)
 
     expect(typeof tx === 'string').toBe(true)
     expect(!!tx).toBe(true)
-  })
+  }, 60_000)
 })
