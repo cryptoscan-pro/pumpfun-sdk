@@ -191,6 +191,10 @@ export class PumpApi {
 				if (!coin) {
 					return;
 				}
+				if ('data' in coin) {
+					callback(type, JSON.parse(coin.data.subscribe.data).payload)
+					return;
+				}
 				callback(type, coin);
 			} catch {
 			}

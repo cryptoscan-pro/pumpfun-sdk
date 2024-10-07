@@ -10,6 +10,7 @@ describe('Listen bumps', () => {
 
     api.onBump((coin) => {
       if ('signature' in coin) {
+				console.log(coin.mint)
         idx += 1;
       }
     })

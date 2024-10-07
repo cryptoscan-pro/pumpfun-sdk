@@ -14,9 +14,9 @@
     "release": "semantic-release"
   },
   "dependencies": {
-    "@cryptoscan/scanner-sdk": "workspace:latest",
+    "@cryptoscan/scanner-sdk": "latest",
     "@cryptoscan/solana-wallet-sdk": "latest",
-    "@cryptoscan/swap-sdk": "workspace:latest",
+    "@cryptoscan/swap-sdk": "latest",
     "@solana/web3.js": "1.93.1",
     "ws": "^8.17.1"
   },
