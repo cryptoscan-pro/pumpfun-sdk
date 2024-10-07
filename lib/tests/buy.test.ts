@@ -8,14 +8,14 @@ describe('Test buy', () => {
     const api = new PumpApi({
       connection: new Connection(process.env.CONNECTION_URL!),
     });
-    const coinAddress = 'HJAoYbnsf16Z8ftk3SsuShKLQQgzmxAPu41RTpjjpump';
+    const coinAddress = process.env.COIN_ADDRESS!;
     const wallet = getWallet(process.env.TEST_SECRET_KEY!);
     console.log('WALLET:', wallet.publicKey.toString());
 
     const tx = await api.buy({
       wallet,
       coinAddress,
-      sol: 0.02,
+      sol: 0.01,
       fee: 0.0001,
       // priorityFee: 0.00001,
     })
