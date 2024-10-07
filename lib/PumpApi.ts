@@ -100,7 +100,7 @@ export class PumpApi {
 				from: 'So11111111111111111111111111111111111111112',
 				to: _params.coinAddress,
 				amount,
-			}).then((r) => r?.result)
+			}).then((r) => r?.amount)
 
 			if (!amount) {
 				throw new Error('Failed to get price')
