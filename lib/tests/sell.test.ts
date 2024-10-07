@@ -8,13 +8,13 @@ describe('Test sell', () => {
     const api = new PumpApi({
       connection: new Connection(process.env.CONNECTION_URL!),
     });
-    const coinAddress = 'HJAoYbnsf16Z8ftk3SsuShKLQQgzmxAPu41RTpjjpump';
+    const coinAddress = process.env.COIN_ADDRESS!;
     const wallet = getWallet(process.env.TEST_SECRET_KEY!);
 
     const tx = await api.sell({
       wallet,
       coinAddress,
-      sol: 0.01,
+      sol: 0.01 * 0.98,
       fee: 0.0001,
     })
 
