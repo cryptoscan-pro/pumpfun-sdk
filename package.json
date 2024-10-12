@@ -13,13 +13,6 @@
     "build:cjs": "tsc -p tsconfig.cjs.json",
     "release": "semantic-release"
   },
-  "dependencies": {
-    "@cryptoscan/scanner-sdk": "latest",
-    "@cryptoscan/solana-wallet-sdk": "latest",
-    "@cryptoscan/swap-sdk": "latest",
-    "@solana/web3.js": "1.93.1",
-    "ws": "^8.17.1"
-  },
   "keywords": [
     "cryptoscan",
     "pumpfun",
@@ -29,6 +22,13 @@
     "cryptocurrency",
     "api"
   ],
+  "dependencies": {
+    "@cryptoscan/scanner-sdk": "latest",
+    "@cryptoscan/solana-wallet-sdk": "latest",
+    "@cryptoscan/swap-sdk": "latest",
+    "@solana/web3.js": "1.93.1",
+    "ws": "^8.17.1"
+  },
   "devDependencies": {
     "@semantic-release/commit-analyzer": "^13.0.0",
     "@semantic-release/git": "^10.0.1",
