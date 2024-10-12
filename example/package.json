@@ -9,6 +9,15 @@
   "devDependencies": {
     "@types/bun": "latest"
   },
+  "keywords": [
+    "telegram",
+    "bot",
+    "cryptoscan",
+    "pumpfun",
+    "solana",
+    "blockchain",
+    "cryptocurrency"
+  ],
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
