@@ -151,8 +151,9 @@ export class PumpApi {
 	}
 
 	public onMint(callback: (data: PumpCoin) => void): () => void {
-		return this.listenPumpFun((type, coin) => {
-			if (type === 'newCoinCreated') {
+		return this.listenPumpFun((_, coin) => {
+			const duration = (Date.now() - coin.created_timestamp) / 1000;
+			if (duration <= 2) {
 				callback(coin);
 			}
 		});
