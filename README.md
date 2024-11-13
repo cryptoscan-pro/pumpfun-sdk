@@ -13,7 +13,7 @@ The fastest and easiest way to trade on pumpfun
 
 [[GitHub]](https://github.com/cryptoscan-pro/pumpfun-sdk)
 [[Our website]](https://cryptoscan.pro/)
-[[Docs]](https://cryptoscan.pro/docs/)
+[[Docs]](https://docs.cryptoscan.pro/)
 [[Discord]](https://discord.gg/ktewAs67fE)
 
 ## Getting started
