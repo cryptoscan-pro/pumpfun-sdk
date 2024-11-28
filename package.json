@@ -23,9 +23,9 @@
     "api"
   ],
   "dependencies": {
-    "@cryptoscan/scanner-sdk": "latest",
-    "@cryptoscan/solana-wallet-sdk": "latest",
-    "@cryptoscan/swap-sdk": "latest",
+    "@cryptoscan/scanner-sdk": "*",
+    "@cryptoscan/solana-wallet-sdk": "*",
+    "@cryptoscan/swap-sdk": "*",
     "@solana/web3.js": "1.93.1",
     "ws": "^8.17.1"
   },
